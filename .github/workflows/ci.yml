@@ -1,0 +1,32 @@
+name: CI — Tests Python
+
+# Déclencher ce workflow à chaque push sur main
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+        # Le runner = la machine virtuelle GitHub qui exécute le job
+        runs-on: ubuntu-latest
+
+        steps:
+          # 1. Récupérer le code du repo
+            - name: Checkout code
+                uses: actions/checkout@v4
+
+          # 2. Installer Python 3.11
+            - name: Setup Python
+                uses: actions/setup-python@v5
+                with:
+                    python-version: '3.11'
+
+          # 3. Installer les dépendances
+            - name: Install dependencies
+                run: pip install -r requirements.txt
+
+          # 4. Lancer les tests
+            - name: Run tests
+                run: pytest tests/ -v
