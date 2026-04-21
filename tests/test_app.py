@@ -1,5 +1,5 @@
 import pytest
-from app import greet, add
+from app import greet, add, multiply
 
 def test_greet_normal():
     assert greet("Titi") == "Hello, Titi! Pipeline is alive 🚀"
