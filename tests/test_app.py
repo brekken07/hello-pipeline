@@ -1,5 +1,5 @@
 import pytest
-from app import greet, add, multiply
+from app import greet, add, multiply, subtract
 
 
 def test_greet_normal():
@@ -19,3 +19,8 @@ def test_add():
 def test_multiply():
     assert multiply(3, 4) == 12
     assert multiply(0, 99) == 0
+
+
+def test_subtract():
+    assert subtract(10, 3) == 7
+    assert subtract(0, 5) == -5
