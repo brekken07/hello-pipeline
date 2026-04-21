@@ -4,13 +4,16 @@ def greet(name: str) -> str:
         raise ValueError("Le nom ne peut pas être vide")
     return f"Hello, {name}! Pipeline is alive 🚀"
 
+
 def add(a: int, b: int) -> int:
     """Additionne deux nombres."""
     return a + b
 
+
 def multiply(a: int, b: int) -> int:
     """Multiplie deux nombres."""
     return a * b
+
 
 if __name__ == "__main__":
     print(greet("DevOps"))
