@@ -1,6 +1,7 @@
 name: CI — Tests Python
 
-# Déclencher ce workflow à chaque push sur main
+# Ce workflow se déclenche automatiquement à chaque push sur main
+# et à chaque fois qu'une Pull Request cible main
 on:
   push:
     branches: [ main ]
@@ -8,29 +9,34 @@ on:
     branches: [ main ]
 
 jobs:
+  # "test" est le nom du job — on pourrait en avoir plusieurs (ex: test + build + deploy)
   test:
-        # Le runner = la machine virtuelle GitHub qui exécute le job
-        runs-on: ubuntu-latest
+    # GitHub va créer une machine virtuelle Ubuntu temporaire pour exécuter les étapes
+    runs-on: ubuntu-latest
 
-        steps:
-          # 1. Récupérer le code du repo
-            - name: Checkout code
-                uses: actions/checkout@v4
+    steps:
+      # Étape 1 : télécharger le code de ton repo sur la machine virtuelle
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-          # 2. Installer Python 3.11
-            - name: Setup Python
-                uses: actions/setup-python@v5
-                with:
-                    python-version: '3.11'
+      # Étape 2 : installer Python 3.11 sur la machine virtuelle
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
-          # 3. Installer les dépendances
-            - name: Install dependencies
-                run: pip install -r requirements.txt
+      # Étape 3 : installer pytest et flake8 listés dans requirements.txt
+      - name: Install dependencies
+        run: pip install -r requirements.txt
 
-          # 4. Vérifier la qualité du code
-            - name: Lint with flake8
-                run: |
-                         # Erreurs critiques : arrête le pipeline si trouvées
-                flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-                         # Avertissements de style (max 120 chars par ligne)
-                flake8 . --count --max-line-length=120 --statistics
+      # Étape 4 : analyser le code avec flake8
+      # Le "|" signifie qu'on va exécuter plusieurs commandes à la suite
+      # Les commentaires DOIVENT être en dehors du bloc run, pas dedans
+      - name: Lint with flake8
+        run: |
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 . --count --max-line-length=120 --statistics
+
+      # Étape 5 : lancer les tests avec pytest
+      - name: Run tests
+        run: pytest tests/ -v
