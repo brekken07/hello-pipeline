@@ -1,0 +1,50 @@
+name: CD — Deploy Test Report
+
+# Se déclenche uniquement sur les pushs directs sur main
+# (donc après un merge de Pull Request)
+on:
+  push:
+    branches: [ main ]
+
+# Permissions nécessaires pour déployer sur GitHub Pages
+permissions:
+    contents: read
+    pages: write
+    id-token: write
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
+
+        steps:
+            - name: Checkout code
+                uses: actions/checkout@v4
+
+            - name: Setup Python
+                uses: actions/setup-python@v5
+                with:
+                    python-version: '3.11'
+
+            # Installe pytest + le plugin qui génère un rapport HTML
+            - name: Install dependencies
+                run: pip install -r requirements.txt pytest-html
+
+            # Lance les tests ET génère le rapport dans le dossier public/
+            - name: Run tests and generate HTML report
+                run: |
+                    mkdir -p public
+                    pytest tests/ -v --html=public/index.html --self-contained-html
+
+            # Prépare le dossier public/ comme artifact Pages
+            - name: Upload Pages artifact
+                uses: actions/upload-pages-artifact@v3
+                with:
+                    path: ./public
+
+            # Déploie sur GitHub Pages
+            - name: Deploy to GitHub Pages
+                id: deployment
+                uses: actions/deploy-pages@v4
