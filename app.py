@@ -15,6 +15,11 @@ def multiply(a: int, b: int) -> int:
     return a * b
 
 
+def subtract(a: int, b: int) -> int:
+    """Soustrait b de a."""
+    return a - b
+
+
 if __name__ == "__main__":
     print(greet("DevOps"))
     print(f"2 + 3 = {add(2, 3)}")
