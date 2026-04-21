@@ -16,5 +16,3 @@ def multiply(a: int, b: int) -> int:
     """Multiplie deux nombres."""
     return a * b
 
-# Variable non utilisée — flake8 va se plaindre (F841)
-unused_variable = "je ne sers à rien"
