@@ -3,7 +3,7 @@ def greet(name: str) -> str:
     if not name:
         raise ValueError("Le nom ne peut pas être vide")
     #return f"Hello, {name}! Pipeline is alive 🚀"
-    return f"Hello, {name}! Version A 🚀"
+    return f"Hello, {name}! Version B 🚀"
 
 
 def add(a: int, b: int) -> int:
