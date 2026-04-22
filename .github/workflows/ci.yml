@@ -7,23 +7,20 @@ on:
     branches: [ main ]
 
 jobs:
-    build-and-test:
-        runs-on: ubuntu-latest
+  build-and-test:
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout code
-                uses: actions/checkout@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-            # Construit l'image Docker depuis le Dockerfile
-            - name: Build Docker image
-                run: docker build -t hello-pipeline .
+      - name: Build Docker image
+        run: docker build -t hello-pipeline .
 
-            # Lance le linter dans le conteneur
-            - name: Lint with flake8
-                run: |
-                    docker run hello-pipeline flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-                    docker run hello-pipeline flake8 . --count --max-line-length=120 --statistics
+      - name: Lint with flake8
+        run: |
+          docker run hello-pipeline flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          docker run hello-pipeline flake8 . --count --max-line-length=120 --statistics
 
-            # Lance les tests dans le conteneur
-            - name: Run tests
-                run: docker run hello-pipeline pytest tests/ -v
+      - name: Run tests
+        run: docker run hello-pipeline pytest tests/ -v
