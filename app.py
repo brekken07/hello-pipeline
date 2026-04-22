@@ -2,7 +2,6 @@ def greet(name: str) -> str:
     """Retourne un message de bienvenue."""
     if not name:
         raise ValueError("Le nom ne peut pas être vide")
-    #return f"Hello, {name}! Pipeline is alive 🚀"
     return f"Hello, {name}! Version B 🚀"
 
 
